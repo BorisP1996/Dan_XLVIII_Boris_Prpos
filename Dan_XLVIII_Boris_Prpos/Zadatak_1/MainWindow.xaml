@@ -7,6 +7,47 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="775*" />
+            <ColumnDefinition Width="17*" />
+        </Grid.ColumnDefinitions>
+        <TextBox HorizontalAlignment="Left"
+                 Height="23"
+                 TextWrapping="Wrap"
+                 Text="{Binding Username,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                 VerticalAlignment="Top"
+                 Width="120"
+                 Margin="220,45,0,0"
+                 MaxLength="13" />
+        <Label Content="Username"
+               HorizontalAlignment="Left"
+               Margin="57,45,0,0"
+               VerticalAlignment="Top"
+               Width="68" />
+        <Label Content="Password"
+               HorizontalAlignment="Left"
+               Margin="57,104,0,0"
+               VerticalAlignment="Top"
+               Width="68" />
+        <TextBox HorizontalAlignment="Left"
+                 Height="23"
+                 TextWrapping="Wrap"
+                 Text="{Binding Password,UpdateSourceTrigger=PropertyChanged}"
+                 VerticalAlignment="Top"
+                 Width="120"
+                 Margin="220,104,0,0"
+                 FontFamily="pack://application:,,,/Resources/#password" />
+        <Button Content="Log in"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Width="75"
+                Margin="57,330,0,0"
+                Command="{Binding Login,UpdateSourceTrigger=PropertyChanged}" />
+        <Button Content="Cancel"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Width="75"
+                Margin="265,330,0,0"
+                Command="{Binding Close,UpdateSourceTrigger=PropertyChanged}" />
     </Grid>
 </Window>
