@@ -28,6 +28,7 @@ namespace Zadatak_1.ViewModel
             tblorder.CustomerJMBG = username;
             //filling list with data from database
             OrderList = GetOrders();
+            //calling function that will show order status for 2 seconds and than that messagebox will be closed
             Show();
         }
         
