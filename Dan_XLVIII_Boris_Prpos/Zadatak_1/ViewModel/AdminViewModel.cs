@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Zadatak_1.Command;
@@ -86,6 +84,7 @@ namespace Zadatak_1.ViewModel
         }
         private bool CanDeleteExecute()
         {
+            //if order is selected
             if (Order != null)
             {
                 return true;
@@ -114,12 +113,14 @@ namespace Zadatak_1.ViewModel
         {
             try
             {
+                //findifn order to modify
                 tblOrder orderToReject = (from r in context.tblOrders where r.OrderID == Order.OrderID select r).FirstOrDefault();
                 MessageBoxResult messageBoxResult = MessageBox.Show("Are you sure? Order will be rejected", "Reject Confirmation", MessageBoxButton.YesNo);
                 if (messageBoxResult == MessageBoxResult.Yes)
                 {
                     orderToReject.OrderStatus = "Rejected";
                     context.SaveChanges();
+                    //refreshing list afterwards
                     OrderList = GetOrders();
                 }
             }
@@ -131,6 +132,7 @@ namespace Zadatak_1.ViewModel
         }
         private bool CanRejectExecute()
         {
+            //if order is selected
             if (Order != null)
             {
                 return true;
@@ -159,12 +161,14 @@ namespace Zadatak_1.ViewModel
         {
             try
             {
+                //finding order to aprove
                 tblOrder orderToApprove = (from r in context.tblOrders where r.OrderID == Order.OrderID select r).FirstOrDefault();
                 MessageBoxResult messageBoxResult = MessageBox.Show("Are you sure? Order will be approved", "Approve Confirmation", MessageBoxButton.YesNo);
                 if (messageBoxResult == MessageBoxResult.Yes)
                 {
                     orderToApprove.OrderStatus = "Approved";
                     context.SaveChanges();
+                    //saving change and refresing list afterwards
                     OrderList = GetOrders();
                 }
             }
@@ -176,6 +180,7 @@ namespace Zadatak_1.ViewModel
         }
         private bool CanApproveExecute()
         {
+            //is order is selected
             if (Order != null)
             {
                 return true;

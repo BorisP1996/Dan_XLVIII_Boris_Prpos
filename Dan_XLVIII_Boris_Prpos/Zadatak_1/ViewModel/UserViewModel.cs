@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Zadatak_1.Command;
@@ -31,37 +28,42 @@ namespace Zadatak_1.ViewModel
             //calling function that will show order status for 2 seconds and than that messagebox will be closed
             Show();
         }
-        
+        public UserViewModel(User user)
+        {
+            this.user = user;
+        }
+        /// <summary>
+        /// Funtion that shows order status for every user and than closes mesagebox after 2s
+        /// </summary>
         public void Show()
-        {         
+        {
             List<string> dateAndStatus = new List<string>();
             List<tblOrder> tblOrders = context.tblOrders.ToList();
 
+            //getting date and status for every order 
             foreach (var item in tblOrders)
             {
-                if (item.CustomerJMBG==tblOrder.CustomerJMBG)
+                if (item.CustomerJMBG == tblOrder.CustomerJMBG)
                 {
-                    dateAndStatus.Add(item.OrderDate + " " + item.OrderStatus+ "\n");
+                    dateAndStatus.Add(item.OrderDate + " " + item.OrderStatus + "\n");
                 }
             }
 
             string total = " ";
-
+            //putting everything from the list into one string => easier to display in mesagebox
             foreach (string item in dateAndStatus)
             {
                 total += item + " ";
             }
+            //aditional message after orders
             total += "\nThis message box will be closed automaticaly after 2s";
 
-            if (dateAndStatus.Count!=0)
+            //show mesage box only if there are orders for that user
+            if (dateAndStatus.Count != 0)
             {
+                //using autoclosingmesagebox class =>allows messagebox to close after specified time
                 AutoClosingMessageBox.Show(total, "Orders status", 2000);
             }
-        }
-
-        public UserViewModel(User user)
-        {
-            this.user = user;
         }
 
         private tblOrder tblorder;
@@ -297,6 +299,9 @@ namespace Zadatak_1.ViewModel
             return ByUser;
         }
     }
+    /// <summary>
+    /// Class that allows MessageBox to timeout
+    /// </summary>
     public class AutoClosingMessageBox
     {
         System.Threading.Timer _timeoutTimer;

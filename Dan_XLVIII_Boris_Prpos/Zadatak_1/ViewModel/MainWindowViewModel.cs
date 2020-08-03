@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Zadatak_1.Command;
@@ -21,6 +17,9 @@ namespace Zadatak_1.ViewModel
         {
             main = mainOpen;
         }
+        /// <summary>
+        /// Property  that will take username from login form
+        /// </summary>
         private string username;
         public string Username
         {
@@ -34,6 +33,9 @@ namespace Zadatak_1.ViewModel
                 OnPropertyChanged("Username");
             }
         }
+        /// <summary>
+        /// Property that will take password from login form
+        /// </summary>
         private string password;
         public string Password
         {
@@ -124,7 +126,11 @@ namespace Zadatak_1.ViewModel
         {
             return true;
         }
-        //method validates jmbg
+        /// <summary>
+        /// Method validates jmbg
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         private bool NumbersOnly(string input)
         {
             input = Username;
@@ -142,56 +148,56 @@ namespace Zadatak_1.ViewModel
             }
             if (counter ==13 )
             {
-                int[] danaUmjesecu = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
-                char[] niz = input.ToCharArray(0, 13); // pretvori u niz karaktera
+                int[] daysInMonth = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+                char[] inputToArray = input.ToCharArray(0, 13); // string to char array
 
-                // prvo provjera unosa godine rodjenja
-                char[] godinaRodjenja = input.ToCharArray(4, 3); // izvuci cifre koje se odnose na godinu rodjenja
-                int pomGodina = 100 * (Convert.ToInt32(godinaRodjenja[0] - '0')) +
-                                 10 * (Convert.ToInt32(godinaRodjenja[1] - '0')) +
-                                       Convert.ToInt32(godinaRodjenja[2] - '0'); // napravi godinu rodjenja
+                // checking year of birth   
+                char[] yearOfBirth = input.ToCharArray(4, 3); // extract digits that represent year
+                int helpYear = 100 * (Convert.ToInt32(yearOfBirth[0] - '0')) +
+                                 10 * (Convert.ToInt32(yearOfBirth[1] - '0')) +
+                                       Convert.ToInt32(yearOfBirth[2] - '0'); // create year of birth
 
-                if (godinaRodjenja[0] == '0') // neko ko je rodjen u XXI vijeku ...
-                    pomGodina += 2000;
+                if (yearOfBirth[0] == '0') // born in XXI century ...
+                    helpYear += 2000;
                 else
-                    pomGodina += 1000; // ko je rodjen u XX vijeku
+                    helpYear += 1000; // born in XX century
 
-                if (pomGodina < 1900) // trenutno, godina ne moze biti manja od 1900-e !
+                if (helpYear < 1900) // entered year smaller than 1900
                 {
                     MessageBox.Show("Entered year smaller than 1900");
                     return false;
                 }
                 else
                 {
-                    if (pomGodina > DateTime.Now.Year) // niti veca od tekuce godine !
+                    if (helpYear > DateTime.Now.Year) // entered year bigger than current year !
                     {
                         MessageBox.Show("Entered year bigger than current year");
                         return false;
                     }
                 }
 
-                // provjera unosa mjeseca rodjenja
-                char[] mjesecRodjenja = input.ToCharArray(2, 2); // izvuci cifre koje se odnose na mjesec rodjenja
-                int pomMjesec = 10 * (Convert.ToInt32(mjesecRodjenja[0] - '0')) +
-                                      Convert.ToInt32(mjesecRodjenja[1] - '0');
-                if (pomMjesec > 12 || pomMjesec < 1) // mjesec mora biti <= 12 i > 0 
+                // checking month of birth
+                char[] monthOfBirth = input.ToCharArray(2, 2); // extract digits that represent month
+                int helpMonth = 10 * (Convert.ToInt32(monthOfBirth[0] - '0')) +
+                                      Convert.ToInt32(monthOfBirth[1] - '0');
+                if (helpMonth > 12 || helpMonth < 1) // mont must be <= 12 and > 0 
                 {
                     MessageBox.Show("Wrong month of birth (third and fourth digit)");
                     return false;
                 }
 
-                // provjera da li godina prestupna (zbog broja dana u mjesecu)
-                if (((pomGodina % 4) == 0) && (((pomGodina % 100) != 0) || ((pomGodina % 400) == 0))) // prestupna godina
+                // check if february has 29 days
+                if (((helpYear % 4) == 0) && (((helpYear % 100) != 0) || ((helpYear % 400) == 0))) // prestupna year
                 {
-                    danaUmjesecu[1] = 29; // koriguj broj dana za februar
+                    daysInMonth[1] = 29; // correction for days in february
                 }
 
-                // provjera unosa dana po mjesecu ...
-                char[] danRodjenja = input.ToCharArray(0, 2);
-                int pomDan = 10 * (Convert.ToInt32(danRodjenja[0] - '0')) +
-                                   Convert.ToInt32(danRodjenja[1] - '0');
+                // check if month and days are compatible
+                char[] dayOfBirth = input.ToCharArray(0, 2);
+                int helpDay = 10 * (Convert.ToInt32(dayOfBirth[0] - '0')) +
+                                   Convert.ToInt32(dayOfBirth[1] - '0');
 
-                if (pomDan > danaUmjesecu[pomMjesec - 1] || pomDan < 1)
+                if (helpDay > daysInMonth[helpMonth - 1] || helpDay < 1)
                 {
                     MessageBox.Show("Wrong day of birth (first and second digit)");
                     return false;
